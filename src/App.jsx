@@ -1,8 +1,15 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
+import DrawerAppBar from './components/Navbar'
 
 const App = () => {
   return (
-    <div className=''>hello world</div>
+<>
+<DrawerAppBar/>
+<Outlet />
+</>
+
+
   )
 }
 
