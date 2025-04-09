@@ -1,97 +1,113 @@
-import React from 'react'
-import useFetch from '../hooks/useFetch'
+import React from 'react';
+import useFetch from '../hooks/useFetch';
 import Variants from '../components/Loading';
 import { useParams } from 'react-router-dom';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
 const Products2 = () => {
-   
-    const params = useParams();
-const [loading, error, data] = useFetch(`https://dummyjson.com/products/${params.id}`)
-if (loading) {
-  return <Variants/>
-}
+  const params = useParams();
+  const [loading, error, data] = useFetch(`https://dummyjson.com/products/${params.id}`);
 
-if (error) {
-  return <div className=' flex justify-center h-[80vh] items-center text-3xl font-bold'>
-      <h1 className='text-red-300'>Error occured</h1>
-  </div>
-}
+  if (loading) {
+    return <Variants />;
+  }
 
+  if (error) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+        <h1 className="text-danger fw-bold fs-1">Error occurred</h1>
+      </div>
+    );
+  }
+
+  const originalPrice = (data.price / (1 - data.discountPercentage / 100)).toFixed(2);
 
   return (
-    <>
-   <div className="max-w-screen-xl mx-auto p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                {/* Product Image */}
-                <div className="flex justify-center">
-                    <img
-                        src={data.thumbnail}
-                        alt={data.title}
-                        className="w-72 h-96 object-contain border rounded-lg shadow-lg"
-                    />
-                </div>
-                {/* Product Details */}
-                <div className="space-y-4">
-                    <h1 className="text-3xl font-semibold text-gray-900">
-                        {data.title}
-                    </h1>
-                    {/* Price and Discount */}
-                    <div className="flex items-center space-x-3">
-                        <span className="text-2xl font-bold text-green-500">${data.price}</span>
-                        <span className="text-sm text-red-600 line-through">${(data.price / (100 - data.discountPercentage) * 100).toFixed(2)}</span> 
-                        <span className="text-sm text-green-600">-{data.discountPercentage}% Off</span>
-                    </div>
-                    {/* Rating and Reviews */}
-                    <div className="flex items-center space-x-2">
-                        <span className="text-yellow-500">⭐⭐⭐⭐⭐</span>
-                        <span className="text-gray-600">{data.rating} ({data.reviews.length} Reviews)</span>
-                    </div>
-                    {/* Description */}
-                    <p className="text-gray-700 text-sm">
-                        {data.description}
-                    </p>
-                    {/* Availability */}
-                    <div className="text-sm text-gray-600">
-                        <p>
-                            <strong>Availability:</strong> {data.availabilityStatus} ({data.stock} left)
-                        </p>
-                        <p>
-                            <strong>Minimum Order Quantity:</strong> 24
-                        </p>
-                    </div>
-                    {/* Shipping Information */}
-                    <p className="text-sm text-gray-600">
-                        <strong>Shipping:</strong> Ships in 1 month
-                    </p>
-                    {/* Warranty */}
-                    <p className="text-sm text-gray-600">
-                        <strong>Warranty:</strong> {data.warrantyInformation}
-                    </p>
-                    {/* Return Policy */}
-                    <p className="text-sm text-gray-600">
-                        <strong>Return Policy:</strong> {data.returnPolicy}
-                    </p>
-                    {/* Barcode & QR Code */}
-                    <div className="space-y-2">
-                        <img
-                            src="https://assets.dummyjson.com/public/qr-code.png"
-                            alt="QR Code"
-                            className="w-20 h-20 border rounded-md"
-                        />
-                        <p className="text-sm text-gray-600">
-                            <strong>Barcode:</strong> {data.sku}
-                        </p>
-                    </div>
-                    {/* Add to Cart Button */}
-                    <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        Add to Cart
-                    </button>
-                </div>
+    <Container className="py-4">
+      <Row className="g-5">
+        {/* Product Image */}
+        <Col lg={6} className="d-flex justify-content-center">
+          <Card className="shadow border-0" style={{ width: '18rem', height: '24rem' }}>
+            <Card.Img
+              variant="top"
+              src={data.thumbnail}
+              alt={data.title}
+              style={{ objectFit: 'contain', height: '100%' }}
+            />
+          </Card>
+        </Col>
+
+        {/* Product Details */}
+        <Col lg={6}>
+          <div className="mb-3">
+            <h1 className="h3 fw-semibold text-dark">{data.title}</h1>
+          </div>
+
+          {/* Price and Discount */}
+          <div className="d-flex align-items-center mb-2 gap-3">
+            <span className="fs-4 fw-bold text-success">${data.price}</span>
+            <span className="text-danger text-decoration-line-through">${originalPrice}</span>
+            <span className="text-success">-{data.discountPercentage}% Off</span>
+          </div>
+
+          {/* Rating and Reviews */}
+          <div className="d-flex align-items-center gap-2 mb-2">
+            <span className="text-warning fs-2">⭐⭐⭐⭐⭐</span>
+            <span className="text-muted">
+              {data.rating} ({data.reviews.length} Reviews)
+            </span>
+          </div>
+
+          {/* Description */}
+          <p className="text-muted small">{data.description}</p>
+
+          {/* Availability */}
+          <div className="text-muted small mb-3">
+            <p>
+              <strong>Availability:</strong> {data.availabilityStatus} ({data.stock} left)
+            </p>
+            <p>
+              <strong>Minimum Order Quantity:</strong> 24
+            </p>
+          </div>
+
+          {/* Shipping */}
+          <p className="text-muted small">
+            <strong>Shipping:</strong> Ships in 1 month
+          </p>
+
+          {/* Warranty */}
+          <p className="text-muted small">
+            <strong>Warranty:</strong> {data.warrantyInformation}
+          </p>
+
+          {/* Return Policy */}
+          <p className="text-muted small">
+            <strong>Return Policy:</strong> {data.returnPolicy}
+          </p>
+
+          {/* Barcode & QR Code */}
+          <div className="d-flex align-items-center gap-3 my-3">
+            <img
+              src="https://assets.dummyjson.com/public/qr-code.png"
+              alt="QR Code"
+              width={80}
+              height={80}
+              className="border rounded"
+            />
+            <div className="text-muted small">
+              <strong>Barcode:</strong> {data.sku}
             </div>
-        </div>
+          </div>
 
-    </>
-  )
-}
+          {/* Add to Cart Button */}
+          <Button variant="primary" className="w-100 py-2 fw-semibold shadow">
+            Add to Cart
+          </Button>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
-export default Products2
+export default Products2;
