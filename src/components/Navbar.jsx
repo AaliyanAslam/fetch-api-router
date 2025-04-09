@@ -17,6 +17,7 @@ import ListItem from "@mui/material/ListItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { ListItemButton, ListItemText } from "@mui/material";
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "products", "Contact"];
@@ -31,18 +32,16 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+      <Typography variant="h6" sx={{ my: 2 , boxShadow: 2 }}>
+        Fetch Products
       </Typography>
       <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            {/* <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton> */}
-          </ListItem>
-        ))}
+      <List className="d-flex align-items-start flex-column m-4 gap-4 ">
+    
+          <Link className="text-decoration-none" to={""}>Home</Link>
+            <Link className="text-decoration-none" to={"about"}>About</Link>
+            <Link className="text-decoration-none" to={"products"}>Products</Link>
+            <Link className="text-decoration-none" to={"contact"}>Contact</Link>
       </List>
     </Box>
   );
