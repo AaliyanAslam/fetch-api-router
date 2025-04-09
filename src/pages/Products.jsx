@@ -1,31 +1,43 @@
-import React, { useEffect, useState } from "react";
 import ImgMediaCardm from "../components/Card";
+import Variants from "../components/Loading";
+import useFetch from "../hooks/useFetch";
+
 
 const Products = () => {
-  const [data, setData] = useState(null);
-  const [Loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [loading, error, data] = useFetch("https://dummyjson.com/products");
+  if (loading) {
+    return <Variants/>
+}
 
-  useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res);
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(true);
-      });
-  });
+if (error) {
+    return <div className=' flex justify-center h-[80vh] items-center text-3xl font-bold'>
+        <h1 className='text-red-300'>Error occured</h1>
+    </div>
+}
+
+
+
+
   return (
     <>
-      <div>
+      <div className="d-flex flex-wrap justify-content-center gap-3 align-items-center cursor-pointer">
         {data &&
           data.products.map((product) => {
-            return <ImgMediaCardm title = {product.title} image = {product.thumbnail} key = {product.id}/>;
+            return (
+              <ImgMediaCardm
+                title={product.title}
+                image={product.thumbnail}
+                key={product.id}
+                id = {product.id}
+              />
+            );
           })}
       </div>
+      {loading && (
+        <h1>
+          <Variants />
+        </h1>
+      )}
     </>
   );
 };

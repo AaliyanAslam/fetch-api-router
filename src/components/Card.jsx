@@ -5,10 +5,11 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
-const ImgMediaCardm = ({title , image }) => {
+import { useNavigate } from "react-router-dom";
+const ImgMediaCardm = ({title,image , id }) => {
+  const navigate = useNavigate();
   return (
-    <Card sx={{ maxWidth: 345 }} >
+    <Card sx={{ maxWidth: 345 , cursor : 'pointer'}} onClick={()=> navigate(`/products/${id}`)}> 
       <CardMedia
         component="img"
         alt="green iguana"
@@ -24,9 +25,9 @@ const ImgMediaCardm = ({title , image }) => {
           species, ranging across all continents except Antarctica
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+      <CardActions className="d-flex justify-content-between px-4 mb-2">
+        <Button size="small" className="border" onClick={()=> navigate(`/products/${id}`)}>See More</Button>
+        <Button size="small" className="border">BUy NOw</Button>
       </CardActions>
     </Card>
   );
